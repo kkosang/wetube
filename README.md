@@ -6,11 +6,12 @@ Vanilla & NodeJS를 이용한 Youtube Clone
 /login -> Login
 /search -> Search
 
-/user/edit -> Edit user
-/user/delete -> Delete user
+/user/:id -> See user
+/user/logout -> Log Out
+/user/edit -> Edit MY Profile
+/user/delete -> Delete MY Profile
 
-/videos/watch -> Watch Video
-/videos/edit -> Edit Video
-/videos/delete -> Delete Video
-/videos/comments -> Comment on a video
-/videos/comments/delete -> Delete A comment of a Video
+/videos/:id -> See Video
+/videos/:id/edit -> Edit Video
+/videos/:id/delete -> Delete Video
+/videos/upload -> Upload Video
