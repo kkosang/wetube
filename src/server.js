@@ -4,8 +4,6 @@ import globalRouter from "./routers/globalRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
 
-console.log(process.cwd());
-
 const app = express();
 const PORT = 3188;
 const logger = morgan("dev");
