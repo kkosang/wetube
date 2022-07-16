@@ -4,6 +4,7 @@ import session from "express-session";
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
+import { localMiddleware } from "./middlewares";
 
 const app = express();
 const logger = morgan("dev");
@@ -19,6 +20,8 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+app.use(localMiddleware);
 app.use("/", rootRouter); // 사용자의 get요청시 globalRouter 라우팅
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
