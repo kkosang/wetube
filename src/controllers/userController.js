@@ -148,12 +148,17 @@ export const postEdit = async (req, res) => {
     },
     body: { name, email, username, location }, // form에서 옴
   } = req; // request.body를 통해
-  await User.findByIdAndUpdate(_id, {
-    name: name,
-    email: email,
-    username: username,
-    location: location,
-  });
-  return res.render("edit-profile");
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name: name,
+      email: email,
+      username: username,
+      location: location,
+    },
+    { new: true }
+  );
+  req.session.user = updatedUser;
+  return res.redirect("/users/edit");
 };
 export const see = (req, res) => res.send("See");
