@@ -146,8 +146,8 @@ export const postEdit = async (req, res) => {
     session: {
       user: { _id },
     },
-    body: { name, email, username, location }, // form에서 옴
-  } = req; // request.body를 통해
+    body: { name, email, username, location },
+  } = req;
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
@@ -161,4 +161,12 @@ export const postEdit = async (req, res) => {
   req.session.user = updatedUser;
   return res.redirect("/users/edit");
 };
+export const getChangePassword = (req, res) => {
+  return res.render("change-password", { pageTitle: "Change Password" });
+};
+export const postChangePassword = (req, res) => {
+  // send notification
+  return res.redirect("/");
+};
+
 export const see = (req, res) => res.send("See");
