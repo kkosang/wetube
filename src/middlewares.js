@@ -23,4 +23,15 @@ export const publicOnlyMiddleware = (req, res, next) => {
   }
 };
 
-export const uploadFiles = multer({ dest: "uploads/" }); // 백앤드로 업로드한 파일을 저장하기 위한 장소를 지정
+export const avatarUpload = multer({
+  dest: "uploads/avatars/",
+  limits: {
+    fileSize: 3000000,
+  },
+}); // 백앤드로 업로드한 파일을 저장하기 위한 장소를 지정
+export const videoUpload = multer({
+  dest: "uploads/vidoes/",
+  limits: {
+    fileSize: 10000000,
+  },
+}); // 백앤드로 업로드한 파일을 저장하기 위한 장소를 지정
