@@ -164,37 +164,47 @@ export const postEdit = async (req, res) => {
   return res.redirect("/users/edit");
 };
 export const getChangePassword = (req, res) => {
-  return res.render("change-password", { pageTitle: "Change Password" });
+  return res.render("users/change-password", { pageTitle: "Change Password" });
 };
 export const postChangePassword = async (req, res) => {
   const {
     // session의 id를 통해 현재 로그인된 사용자를 확인하고, form에서 정보를 가져옴
     session: {
-      user: { _id, password },
+      user: { _id },
     },
     body: { oldPassword, newPassword, newPasswordConfirmation },
   } = req;
+
   // 기존비밀번호가 일치하는지 확인
-  const ok = await bcrypt.compare(oldPassword, password);
+  const user = await User.findById(_id);
+  const ok = await bcrypt.compare(oldPassword, user.password);
   if (!ok) {
-    return res.status(400).render("change-password", {
+    return res.status(400).render("users/change-password", {
       pageTitle: "Change Password",
       errorMessage: "The current password is incorrect",
     });
   }
   // 변경하려는 비밀번호가 일치하는지 확인
   if (newPassword !== newPasswordConfirmation) {
-    return res.status(400).render("change-password", {
+    return res.status(400).render("users/change-password", {
       pageTitle: "Change Password",
       errorMessage: "The password does not match the confirmation",
     });
   }
   // 모든게 일치 할 경우 비밀번호 변경
-  const user = await User.findById(_id);
   user.password = newPassword;
   await user.save();
-
   return res.redirect("/users/logout");
 };
 
-export const see = (req, res) => res.send("See");
+export const see = async (req, res) => {
+  const { id } = req.params; // req.session.id로 가져오지 않은 이유는 public으로 보여주기 위함
+  const user = await User.findById(id);
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User not found" });
+  }
+  return res.render("users/profile", {
+    pageTitle: `${user.name}의 Profile`,
+    user: user,
+  });
+};
