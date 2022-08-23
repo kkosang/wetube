@@ -25,6 +25,7 @@ app.use(
 
 app.use(localMiddleware);
 app.use("/uploads", express.static("uploads")); // 브라우저에게 폴더 전체를 노출시킴
+app.use("/static", express.static("assets")); // 브라우저에게 폴더 전체를 노출시킴
 app.use("/", rootRouter); // 사용자의 get요청시 globalRouter 라우팅
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
