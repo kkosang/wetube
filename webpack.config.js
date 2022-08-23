@@ -5,6 +5,7 @@ const path = require("path");
 module.exports = {
   entry: "./src/client/js/main.js", // 변경하고자 하는 파일의 경로
   mode: "development",
+  watch: true,
   plugins: [
     new MiniCssExtractPlugin({
       filename: "css/styles.css",
@@ -15,6 +16,7 @@ module.exports = {
     path: path.resolve(__dirname, "assets"), // 변형된 결과물의 저장 경로
     // dirname : directory name 파일까지의 전체 경로
     // path.resolve : 뒤의 몇개가 오던지 처음부터 끝까자 경로를 만들어줌
+    clean: true, // output폴더를 build하기전에 clean해줌
   },
   module: {
     rules: [
