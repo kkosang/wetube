@@ -14,11 +14,18 @@ module.exports = {
       {
         test: /\.js$/,
         use: {
-          loader: "babel-loader",
+          loader: "babel-loader", // loader는 파일을 전환해줌
           options: {
             presets: [["@babel/preset-env", { targets: "defaults" }]],
           },
         },
+      },
+      {
+        test: /\.scss$/, // scss파일을 변환
+        use: ["style-loader", "css-loader", "sass-loader"], // 마지막 loader부터 역순으로 // webpack은 뒤에서부터 실행
+        // scss-> css로 변환
+        // css를 프론트엔드에 적용
+        // font와 같은 styles
       },
     ],
   },
