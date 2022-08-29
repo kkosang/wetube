@@ -3,7 +3,10 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 
 module.exports = {
-  entry: "./src/client/js/main.js", // 변경하고자 하는 파일의 경로
+  entry: {
+    main: "./src/client/js/main.js",
+    videoPlayer: "./src/client/js/videoPlayer.js",
+  }, // 변경하고자 하는 파일의 경로
   mode: "development",
   watch: true,
   plugins: [
@@ -12,7 +15,7 @@ module.exports = {
     }),
   ],
   output: {
-    filename: "js/main.js",
+    filename: "js/[name].js", // [name]시 파일의 이름을 따라 감
     path: path.resolve(__dirname, "assets"), // 변형된 결과물의 저장 경로
     // dirname : directory name 파일까지의 전체 경로
     // path.resolve : 뒤의 몇개가 오던지 처음부터 끝까자 경로를 만들어줌
