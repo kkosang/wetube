@@ -12,9 +12,8 @@ const handlePlayClick = (e) => {
     video.pause();
   }
 };
-
 const handlePlay = () => (playBtn.innerText = "Pause");
-const handlePause = () => (playBtn.innerText = "Pause");
+const handlePause = () => (playBtn.innerText = "Play");
 
 const handleMute = (e) => {};
 
