@@ -7,7 +7,9 @@ const totalTime = document.getElementById("totalTime");
 const timeline = document.getElementById("timeline");
 const fullScreenBtn = document.getElementById("fullScreen");
 const videoContainer = document.getElementById("videoContainer");
+const videoControls = document.getElementById("videoControls");
 
+let controlsTimeout = null; // timeout은 return시 id를 받기 때문
 let volumeValue = 0.5;
 video.volume = volumeValue;
 
@@ -69,9 +71,23 @@ const handleFullScreen = () => {
     document.exitFullscreen();
     fullScreenBtn.innerText = "Enter Full Screen";
   } else {
-    videoContainer.requestFullscreen();
+    videoContainer.requestFullscreen(); // element가 div면 어떤것도 fullscreen 가능
     fullScreenBtn.innerText = "Exit Full Screen";
   }
+};
+
+const handleMouseMove = () => {
+  if (controlsTimeout) {
+    clearTimeout(controlsTimeout);
+    controlsTimeout = null;
+  }
+  videoControls.classList.add("showing");
+};
+
+const handleMouseLeave = () => {
+  controlsTimeout = setTimeout(() => {
+    videoControls.classList.remove("showing");
+  }, 3000);
 };
 
 playBtn.addEventListener("click", handlePlayClick);
@@ -81,3 +97,5 @@ video.addEventListener("loadedmetadata", handleLoadedMetadata); // video화면�
 video.addEventListener("timeupdate", handleTimeUpdate); // video 시간이 변경될 때마다 JS가 event실행
 timeline.addEventListener("input", handleTimelineChange);
 fullScreenBtn.addEventListener("click", handleFullScreen);
+video.addEventListener("mousemove", handleMouseMove);
+video.addEventListener("mouseleave", handleMouseLeave);
