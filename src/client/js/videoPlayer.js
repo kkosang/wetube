@@ -1,11 +1,14 @@
 const video = document.querySelector("video");
 const playBtn = document.getElementById("play");
+const playBtnIcon = playBtn.querySelector("i");
 const muteBtn = document.getElementById("mute");
+const muteBtnIcon = muteBtn.querySelector("i");
 const volumeRange = document.getElementById("volume");
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const timeline = document.getElementById("timeline");
 const fullScreenBtn = document.getElementById("fullScreen");
+const fullScreenIcon = fullScreenBtn.querySelector("i");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
 
@@ -21,7 +24,7 @@ const handlePlayClick = (e) => {
   } else {
     video.pause();
   }
-  playBtn.innerText = video.paused ? "Play" : "Pause";
+  playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
 };
 
 const handleMute = (e) => {
@@ -30,7 +33,9 @@ const handleMute = (e) => {
   } else {
     video.muted = true;
   }
-  muteBtn.innerText = video.muted ? "Unmute" : "Mute";
+  muteBtnIcon.classList = video.muted
+    ? "fas fa-volume-mute"
+    : "fas fa-volume-up";
   volumeRange.value = video.muted ? 0 : volumeValue;
 };
 
@@ -70,10 +75,10 @@ const handleFullScreen = () => {
   const fullScreen = document.fullscreenElement; // element 아니면 null반환
   if (fullScreen) {
     document.exitFullscreen();
-    fullScreenBtn.innerText = "Enter Full Screen";
+    fullScreenIcon.classList = "fas fa-expand";
   } else {
     videoContainer.requestFullscreen(); // element가 div면 어떤것도 fullscreen 가능
-    fullScreenBtn.innerText = "Exit Full Screen";
+    fullScreenIcon.classList = "fas fa-compress";
   }
 };
 
@@ -96,12 +101,24 @@ const handleMouseLeave = () => {
   controlsTimeout = setTimeout(hideControls, 3000);
 };
 
+const handleKeydown = (event) => {
+  const { key } = event;
+  if (key === " ") {
+    event.preventDefault(); //화면 내려감 방지
+    handlePlayClick();
+  } else if (key === "f") {
+    handleFullScreen();
+  }
+};
+
 playBtn.addEventListener("click", handlePlayClick);
+video.addEventListener("click", handlePlayClick);
+window.addEventListener("keydown", handleKeydown);
 muteBtn.addEventListener("click", handleMute);
 volumeRange.addEventListener("input", handleVolumeChange);
-video.addEventListener("loadedmetadata", handleLoadedMetadata); // video화면을 제외한 부분
+video.addEventListener("loadeddata", handleLoadedMetadata); // video화면을 제외한 부분
 video.addEventListener("timeupdate", handleTimeUpdate); // video 시간이 변경될 때마다 JS가 event실행
 timeline.addEventListener("input", handleTimelineChange);
 fullScreenBtn.addEventListener("click", handleFullScreen);
-video.addEventListener("mousemove", handleMouseMove);
-video.addEventListener("mouseleave", handleMouseLeave);
+videoContainer.addEventListener("mousemove", handleMouseMove);
+videoContainer.addEventListener("mouseleave", handleMouseLeave);
