@@ -5,6 +5,7 @@ import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
+import apiRouter from "./routers/apiRouter";
 import { localMiddleware } from "./middlewares";
 
 const app = express();
@@ -29,5 +30,6 @@ app.use("/static", express.static("assets")); // 브라우저에게 폴더 전�
 app.use("/", rootRouter); // 사용자의 get요청시 globalRouter 라우팅
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
+app.use("/api", apiRouter);
 
 export default app;
