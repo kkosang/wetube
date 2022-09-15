@@ -111,6 +111,14 @@ const handleKeydown = (event) => {
   }
 };
 
+const handleEnded = () => {
+  const { id } = videoContainer.dataset; // pug에서 저장한 정보 가져옴 // element.dataset으로 접근
+  fetch(`/api/videos/${id}/view`, {
+    // api 불러오기
+    method: "POST",
+  });
+};
+
 playBtn.addEventListener("click", handlePlayClick);
 video.addEventListener("click", handlePlayClick);
 window.addEventListener("keydown", handleKeydown);
@@ -118,6 +126,7 @@ muteBtn.addEventListener("click", handleMute);
 volumeRange.addEventListener("input", handleVolumeChange);
 video.addEventListener("loadeddata", handleLoadedMetadata); // video화면을 제외한 부분
 video.addEventListener("timeupdate", handleTimeUpdate); // video 시간이 변경될 때마다 JS가 event실행
+video.addEventListener("ended", handleEnded);
 timeline.addEventListener("input", handleTimelineChange);
 fullScreenBtn.addEventListener("click", handleFullScreen);
 videoContainer.addEventListener("mousemove", handleMouseMove);
