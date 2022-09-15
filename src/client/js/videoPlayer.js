@@ -108,6 +108,8 @@ const handleKeydown = (event) => {
     handlePlayClick();
   } else if (key === "f") {
     handleFullScreen();
+  } else if (key === "m") {
+    handleMute();
   }
 };
 
