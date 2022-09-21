@@ -3,8 +3,15 @@ const video = document.getElementById("preview"); // upload의 video객체 생�
 
 let stream; // 다른 func에서 사용하기 위함
 let recorder;
+let videoFile;
 
-const handleDownload = () => {};
+const handleDownload = () => {
+  const a = document.createElement("a"); // 링크 생성
+  a.href = videoFile;
+  a.download = "MyRecording.webm"; // 다운로드 할 이름과 확장자
+  document.body.appendChild(a);
+  a.click();
+};
 
 const handleStop = () => {
   startBtn.innerText = "Download Recording";
@@ -21,7 +28,7 @@ const handleStart = () => {
 
   recorder = new MediaRecorder(stream); // MediaRecorder를 통해 오디오나 비디오를 녹화
   recorder.ondataavailable = (event) => {
-    const videoFile = URL.createObjectURL(event.data); // 단순히 브라우저의 메모리를 가리키기만 하고 있는 URL (파일을 가리키고 있는 url)
+    videoFile = URL.createObjectURL(event.data); // 단순히 브라우저의 메모리를 가리키기만 하고 있는 URL (파일을 가리키고 있는 url)
     // preview를 recorder 영상으로 바꿈
     video.srcObject = null;
     video.src = videoFile;
