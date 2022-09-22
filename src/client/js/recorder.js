@@ -13,10 +13,13 @@ const handleDownload = async () => {
   ffmpeg.FS("writeFile", "recording.webm", await fetchFile(videoFile)); // ffmpeg에 파일 생성
 
   await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4"); // 가상 파일 시스템에서 .webm파일을 초당 60프레임인 .mp4파일로 생성하는 명령어
+  const mp4File = ffmpeg.FS("readFile", "output.mp4"); // mp4파일 읽기
+  const mp4Blob = new Blob([mp4File.buffer], { type: "video/mp4" });
+  const mp4Url = URL.createObjectURL(mp4Blob);
 
   const a = document.createElement("a"); // 링크 생성
-  a.href = videoFile;
-  a.download = "MyRecording.webm"; // 다운로드 할 이름과 확장자
+  a.href = mp4Url;
+  a.download = "MyRecording.mp4"; // 다운로드 할 이름과 확장자
   document.body.appendChild(a);
   a.click();
 };
