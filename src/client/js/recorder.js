@@ -13,15 +13,36 @@ const handleDownload = async () => {
   ffmpeg.FS("writeFile", "recording.webm", await fetchFile(videoFile)); // ffmpeg에 파일 생성
 
   await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4"); // 가상 파일 시스템에서 .webm파일을 초당 60프레임인 .mp4파일로 생성하는 명령어
+
+  await ffmpeg.run(
+    "-i",
+    "recording.webm",
+    "-ss",
+    "00:00:01",
+    "-frames:v",
+    "1",
+    "thumbnail.jpg"
+  ); // 특정시간대로 이동해서 1장의 스크린샷을 찍어 .jpg파일로 저장
   const mp4File = ffmpeg.FS("readFile", "output.mp4"); // mp4파일 읽기
-  const mp4Blob = new Blob([mp4File.buffer], { type: "video/mp4" });
-  const mp4Url = URL.createObjectURL(mp4Blob);
+  const thumbFile = ffmpeg.FS("readFile", "thumbnail.jpg");
+
+  const mp4Blob = new Blob([mp4File.buffer], { type: "video/mp4" }); // blob 생성
+  const thumbBlob = new Blob([thumbFile.buffer], { type: "image/jpg" });
+
+  const mp4Url = URL.createObjectURL(mp4Blob); // url을 통해서 파일 접근
+  const thumbUrl = URL.createObjectURL(thumbBlob);
 
   const a = document.createElement("a"); // 링크 생성
   a.href = mp4Url;
   a.download = "MyRecording.mp4"; // 다운로드 할 이름과 확장자
   document.body.appendChild(a);
   a.click();
+
+  const thumbA = document.createElement("a"); // 링크 생성
+  thumbA.href = thumbUrl;
+  thumbA.download = "MyThumbnail.jpg"; // 다운로드 할 이름과 확장자
+  document.body.appendChild(thumbA);
+  thumbA.click();
 };
 
 const handleStop = () => {
