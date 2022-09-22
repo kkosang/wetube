@@ -13,6 +13,11 @@ const logger = morgan("dev");
 
 app.set("view engine", "pug"); // view engine을 pug로 세팅
 app.set("views", process.cwd() + "/src/views"); // view 설정 바꾸기
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+}); // ffmpeg의 error Uncaught (in promise) ReferenceError: SharedArrayBuffer is not defined
 app.use(logger);
 app.use(express.urlencoded({ extended: true })); // middleware를 route를 사용하기 전에 사용
 app.use(

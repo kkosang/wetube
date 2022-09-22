@@ -1,3 +1,4 @@
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 const startBtn = document.getElementById("startBtn");
 const video = document.getElementById("preview"); // upload의 video객체 생성
 
@@ -5,7 +6,14 @@ let stream; // 다른 func에서 사용하기 위함
 let recorder;
 let videoFile;
 
-const handleDownload = () => {
+const handleDownload = async () => {
+  const ffmpeg = createFFmpeg({ log: true }); // 백엔드가 아니라 사용자의 컴퓨터에서 변환
+  await ffmpeg.load(); // 웹사이트에서 다른 software를 사용하기 때문에 await로 기다려줘야함
+
+  ffmpeg.FS("writeFile", "recording.webm", await fetchFile(videoFile)); // ffmpeg에 파일 생성
+
+  await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4"); // 가상 파일 시스템에서 .webm파일을 초당 60프레임인 .mp4파일로 생성하는 명령어
+
   const a = document.createElement("a"); // 링크 생성
   a.href = videoFile;
   a.download = "MyRecording.webm"; // 다운로드 할 이름과 확장자
