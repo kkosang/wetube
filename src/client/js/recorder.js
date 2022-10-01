@@ -66,20 +66,12 @@ const handleDownload = async () => {
   actionBtn.addEventListener("click", handleStart);
 };
 
-const handleStop = () => {
-  actionBtn.innerText = "Download Recording";
-  actionBtn.removeEventListener("click", handleStop);
-  actionBtn.addEventListener("click", handleDownload);
-
-  recorder.stop();
-};
-
 const handleStart = () => {
-  actionBtn.innerText = "Stop Recording";
+  actionBtn.innerText = "Recording";
+  actionBtn.disabled = true;
   actionBtn.removeEventListener("click", handleStart);
-  actionBtn.addEventListener("click", handleStop);
 
-  recorder = new MediaRecorder(stream); // MediaRecorder를 통해 오디오나 비디오를 녹화
+  recorder = new MediaRecorder(stream, { mimeType: "video/webm" }); // MediaRecorder를 통해 오디오나 비디오를 녹화
   recorder.ondataavailable = (event) => {
     videoFile = URL.createObjectURL(event.data); // 단순히 브라우저의 메모리를 가리키기만 하고 있는 URL (파일을 가리키고 있는 url)
     // preview를 recorder 영상으로 바꿈
@@ -87,15 +79,24 @@ const handleStart = () => {
     video.src = videoFile;
     video.loop = true;
     video.play();
+    actionBtn.innerText = "Download";
+    actionBtn.disabled = false;
+    actionBtn.addEventListener("click", handleDownload);
   }; // 녹화 종료시 ondata를 통해 정보를 가져옴
   recorder.start(); // 녹화시작
+  setTimeout(() => {
+    recorder.stop();
+  }, 5000);
 };
 
 const init = async () => {
   //마이크와 카메라에 접근
   stream = await navigator.mediaDevices.getUserMedia({
     audio: false,
-    video: { width: 500, height: 800 },
+    video: {
+      width: 1024,
+      height: 576,
+    },
   });
   video.srcObject = stream; // video의 srcObj
   video.play();
